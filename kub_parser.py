@@ -1,6 +1,7 @@
 
 import csv
 import datetime
+import pandas as pd
 
 def parse(inputfilename):
 
@@ -20,9 +21,9 @@ def parse(inputfilename):
                 usage = float(usage)
             time += [datetime_obj]
             value += [usage]
-
-    output = {'time': time, 'usage': value}
-    return output
+    out_dict = {'time': time, 'consumption': value}
+    data = pd.DataFrame(data=out_dict, columns=['time', 'consumption'])
+    return data
 
 def get_billing_period(inputfilename):
     two_cities = inputfilename.split('-')
