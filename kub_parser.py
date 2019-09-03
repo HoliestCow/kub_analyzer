@@ -19,7 +19,7 @@ def parse(inputfilename):
                 usage = 0.0
             else:
                 usage = float(usage)
-            time += [datetime_obj]
+            time += [pd.Timestamp(datetime_obj)]
             value += [usage]
     out_dict = {'time': time, 'consumption': value}
     data = pd.DataFrame(data=out_dict, columns=['time', 'consumption'])

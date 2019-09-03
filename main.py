@@ -14,22 +14,28 @@ def main():
 
     # master_dataframe = pd.DataFrame(data=None, columns='time')
     master_dataframe = []
+    electric_dataframe = []
+    water_dataframe = []
 
     for bill in electric_filelist:
         billing_period = kub_parser.get_billing_period(bill)
         current_dataframe = kub_parser.parse(bill)
         current_dataframe.columns = ['time', 'electricity_consumption']
-        master_dataframe += [current_dataframe]
-    master_dataframe = pd.concat(master_dataframe, ignore_index=True)
-    print(master_dataframe)
+        electric_dataframe += [current_dataframe]
 
     # NOTE: Figure out this merging stuff. 
     for bill in water_filelist:
+        print(bill)
         billing_period = kub_parser.get_billing_period(bill)
         current_dataframe = kub_parser.parse(bill)
         current_dataframe.columns = ['time', 'water_consumption']
-        master_dataframe = pd.merge(master_dataframe, current_dataframe,
-                                    on='time')
+        water_dataframe += [current_dataframe]
+
+    electric_dataframe = pd.concat(electric_dataframe)
+    water_dataframe = pd.concat(water_dataframe)
+
+    master_dataframe = pd.merge(electric_dataframe, water_dataframe,
+                                on='time', how='inner')
     return
 
 main()
